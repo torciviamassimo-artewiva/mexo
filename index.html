@@ -1,0 +1,1757 @@
+
+```html
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M.EX.O — Mosaic Exhibition Orchestra | Open Call</title>
+    <script>document.documentElement.classList.add('js');</script>
+    <meta name="description" content="Open Call 2025: M.EX.O è un laboratorio creativo multidisciplinare dove culture, generazioni e linguaggi si fondono in un mosaico sonoro e visivo unico.">
+    <meta property="og:title" content="M.EX.O — Mosaic Exhibition Orchestra | Open Call">
+    <meta property="og:description" content="Una nuova orchestra per un nuovo modo di fare musica.">
+    <meta property="og:type" content="website">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --yellow: #F7D000;
+            --orange: #F28C28;
+            --red: #E63946;
+            --blue: #2176FF;
+            --green: #2EC4B6;
+            --turchese: #00B4D8;
+            --magenta: #D72483;
+            --dark: #1a1a2e;
+            --light: #f9f3e9;
+            --gray: #333;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 90px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--light);
+            color: var(--gray);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.4s ease;
+        }
+
+        .nav.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 2px 30px rgba(0,0,0,0.08);
+            padding: 14px 40px;
+        }
+
+        .nav-logo {
+            font-weight: 900;
+            font-size: 1.3rem;
+            letter-spacing: -0.5px;
+            color: var(--dark);
+        }
+
+        .nav-logo span {
+            background: linear-gradient(135deg, var(--red), var(--magenta), var(--blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--gray);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--magenta);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--magenta);
+        }
+
+        .mobile-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 101;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .mobile-toggle span {
+            width: 28px;
+            height: 2.5px;
+            background: var(--dark);
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 40px 80px;
+            overflow: hidden;
+        }
+
+        .hero-mosaic-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .mosaic-tile {
+            position: absolute;
+            border-radius: 4px;
+            opacity: 0;
+            animation: tileAppear 0.8s forwards;
+        }
+
+        @keyframes tileAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.3) rotate(15deg);
+            }
+            /* Nessun "to": l'animazione termina sui valori inline (opacità tenue + rotazione casuale) */
+        }
+
+        .floating-tile {
+            animation: tileAppear 0.8s forwards, floatTile 6s ease-in-out infinite;
+        }
+
+        @keyframes floatTile {
+            0%, 100% { transform: translateY(0px) rotate(var(--rot, 0deg)); }
+            33% { transform: translateY(-12px) rotate(calc(var(--rot, 0deg) + 2deg)); }
+            66% { transform: translateY(8px) rotate(calc(var(--rot, 0deg) - 1deg)); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            border: 2px solid var(--yellow);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gray);
+            margin-bottom: 32px;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .hero-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--red);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.8rem, 6vw, 5.5rem);
+            font-weight: 900;
+            line-height: 1.05;
+            color: var(--dark);
+            letter-spacing: -2px;
+            margin-bottom: 10px;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .hero h1 .mosaic-text {
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero h1 .accent {
+            background: linear-gradient(135deg, var(--red), var(--orange), var(--yellow), var(--green), var(--blue), var(--magenta));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 8s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-subtitle-line {
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            font-weight: 600;
+            color: var(--dark);
+            opacity: 0.7;
+            letter-spacing: -0.5px;
+            animation: fadeInUp 0.8s ease 0.5s both;
+            margin-bottom: 24px;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: #555;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.8s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 18px 40px;
+            background: var(--dark);
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border-radius: 60px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            letter-spacing: 0.5px;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--magenta), var(--blue));
+            transition: left 0.4s;
+            z-index: 0;
+        }
+
+        .btn-primary:hover::before {
+            left: 0;
+        }
+
+        .btn-primary span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(215, 36, 131, 0.3);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 18px 40px;
+            background: transparent;
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border-radius: 60px;
+            border: 2px solid #ddd;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--blue);
+            color: var(--blue);
+            transform: translateY(-2px);
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            animation: fadeInUp 1s ease 1.2s both;
+        }
+
+        .scroll-indicator span {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #aaa;
+            font-weight: 600;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: #ddd;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scroll-line::after {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--magenta);
+            animation: scrollDown 2s ease infinite;
+        }
+
+        @keyframes scrollDown {
+            0% { top: -100%; }
+            100% { top: 100%; }
+        }
+
+        /* Section Common */
+        section {
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 40px;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .section-label .line {
+            width: 40px;
+            height: 2px;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-weight: 900;
+            color: var(--dark);
+            letter-spacing: -1.5px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 600px;
+            line-height: 1.7;
+        }
+
+        /* What is MEXO Section */
+        .what-section {
+            background: white;
+        }
+
+        .what-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-top: 60px;
+        }
+
+        .what-column {
+            position: relative;
+        }
+
+        .what-column-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 32px;
+        }
+
+        .what-column-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .what-column-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .not-column .what-column-icon {
+            background: #fee2e2;
+        }
+
+        .not-column .what-column-title {
+            color: var(--red);
+        }
+
+        .yes-column .what-column-icon {
+            background: #d1fae5;
+        }
+
+        .yes-column .what-column-title {
+            color: var(--green);
+        }
+
+        .what-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .what-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 18px 22px;
+            border-radius: 14px;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        .not-column .what-list li {
+            background: #fef2f2;
+            color: #7f1d1d;
+            border: 1px solid #fecaca;
+        }
+
+        .not-column .what-list li:hover {
+            background: #fee2e2;
+            transform: translateX(-4px);
+        }
+
+        .not-column .what-list li .icon {
+            color: var(--red);
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .yes-column .what-list li {
+            background: #f0fdf4;
+            color: #14532d;
+            border: 1px solid #bbf7d0;
+        }
+
+        .yes-column .what-list li:hover {
+            background: #dcfce7;
+            transform: translateX(4px);
+        }
+
+        .yes-column .what-list li .icon {
+            color: var(--green);
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .vs-divider {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: var(--dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 900;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            z-index: 2;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .what-grid-wrapper {
+            position: relative;
+        }
+
+        /* Who Section */
+        .who-section {
+            background: var(--light);
+        }
+
+        .who-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: 60px;
+        }
+
+        .who-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid transparent;
+            cursor: default;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .who-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            transition: height 0.4s;
+        }
+
+        .who-card:nth-child(1)::before { background: linear-gradient(135deg, var(--yellow), var(--orange)); }
+        .who-card:nth-child(2)::before { background: linear-gradient(135deg, var(--blue), var(--turchese)); }
+        .who-card:nth-child(3)::before { background: linear-gradient(135deg, var(--magenta), var(--red)); }
+        .who-card:nth-child(4)::before { background: linear-gradient(135deg, var(--green), var(--turchese)); }
+
+        .who-card:hover::before {
+            height: 6px;
+        }
+
+        .who-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .who-card:nth-child(1):hover { border-color: var(--orange); }
+        .who-card:nth-child(2):hover { border-color: var(--blue); }
+        .who-card:nth-child(3):hover { border-color: var(--magenta); }
+        .who-card:nth-child(4):hover { border-color: var(--green); }
+
+        .who-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            margin: 0 auto 24px;
+        }
+
+        .who-card:nth-child(1) .who-icon { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+        .who-card:nth-child(2) .who-icon { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+        .who-card:nth-child(3) .who-icon { background: linear-gradient(135deg, #fce7f3, #fbcfe8); }
+        .who-card:nth-child(4) .who-icon { background: linear-gradient(135deg, #d1fae5, #a7f3d0); }
+
+        .who-card h3 {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 10px;
+            letter-spacing: -0.3px;
+        }
+
+        .who-card p {
+            font-size: 0.88rem;
+            color: #888;
+            line-height: 1.6;
+        }
+
+        /* Values Section */
+        .values-section {
+            background: var(--dark);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .values-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(215, 36, 131, 0.15), transparent);
+            border-radius: 50%;
+        }
+
+        .values-section::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(33, 118, 255, 0.1), transparent);
+            border-radius: 50%;
+        }
+
+        .values-section .section-label {
+            color: var(--yellow);
+        }
+
+        .values-section .section-label .line {
+            background: var(--yellow);
+        }
+
+        .values-section .section-title {
+            color: white;
+        }
+
+        .values-section .section-subtitle {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            margin-top: 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .value-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 36px 24px;
+            text-align: center;
+            transition: all 0.4s;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .value-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0;
+            transition: height 0.4s;
+            opacity: 0.1;
+        }
+
+        .value-card:nth-child(1)::after { background: var(--yellow); }
+        .value-card:nth-child(2)::after { background: var(--turchese); }
+        .value-card:nth-child(3)::after { background: var(--green); }
+        .value-card:nth-child(4)::after { background: var(--orange); }
+        .value-card:nth-child(5)::after { background: var(--magenta); }
+
+        .value-card:hover::after {
+            height: 100%;
+        }
+
+        .value-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .value-emoji {
+            font-size: 2.5rem;
+            margin-bottom: 18px;
+            display: block;
+            position: relative;
+            z-index: 1;
+        }
+
+        .value-card h3 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .value-card p {
+            font-size: 0.82rem;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.5;
+            position: relative;
+            z-index: 1;
+        }
+
+        .value-card:nth-child(1) h3 { color: var(--yellow); }
+        .value-card:nth-child(2) h3 { color: var(--turchese); }
+        .value-card:nth-child(3) h3 { color: var(--green); }
+        .value-card:nth-child(4) h3 { color: var(--orange); }
+        .value-card:nth-child(5) h3 { color: var(--magenta); }
+
+        /* Apply Section */
+        .apply-section {
+            background: white;
+            text-align: center;
+        }
+
+        .apply-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .apply-visual {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .apply-block {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            animation: blockPulse 3s ease infinite;
+        }
+
+        @keyframes blockPulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .apply-section .section-title {
+            margin-bottom: 24px;
+        }
+
+        .apply-text {
+            font-size: 1.15rem;
+            color: #666;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .apply-email {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #f8f9fa;
+            padding: 16px 28px;
+            border-radius: 14px;
+            margin-bottom: 40px;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s;
+        }
+
+        .apply-email:hover {
+            background: #f0f1f3;
+            border-color: #d0d5dd;
+        }
+
+        .apply-email .email-icon {
+            font-size: 1.2rem;
+        }
+
+        .apply-email a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.05rem;
+            letter-spacing: -0.3px;
+        }
+
+        .apply-email .copy-hint {
+            font-size: 0.7rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .apply-email .copy-hint:hover {
+            color: var(--magenta);
+        }
+
+        .email-alt-label {
+            font-size: 0.7rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .apply-cta-wrapper {
+            margin-top: 20px;
+        }
+
+        .btn-large {
+            padding: 22px 56px;
+            font-size: 1.1rem;
+        }
+
+        /* Apply Form */
+        .apply-form {
+            margin-top: 50px;
+            background: #f8f9fa;
+            padding: 40px;
+            border-radius: 20px;
+            border: 1px solid #e9ecef;
+            text-align: left;
+            width: 100%;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: var(--dark);
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--blue);
+            box-shadow: 0 0 0 4px rgba(33, 118, 255, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 140px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .checkbox-group input {
+            margin-top: 4px;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--magenta);
+            flex-shrink: 0;
+        }
+
+        .checkbox-group label {
+            font-size: 0.85rem;
+            color: #555;
+            line-height: 1.5;
+            font-weight: 500;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        .checkbox-group a {
+            color: var(--magenta);
+            text-decoration: underline;
+        }
+
+        .form-submit {
+            text-align: center;
+        }
+
+        .form-note {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 16px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 40px 30px;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 50px;
+        }
+
+        .footer-brand h3 {
+            font-size: 1.6rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            margin-bottom: 16px;
+        }
+
+        .footer-brand h3 span {
+            background: linear-gradient(135deg, var(--yellow), var(--orange), var(--red), var(--magenta));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-brand p {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+            line-height: 1.7;
+            max-width: 300px;
+        }
+
+        .footer-col h4 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-col a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .footer-col a:hover {
+            color: white;
+            padding-left: 6px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 12px;
+        }
+
+        .footer-social a {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-social a:hover {
+            background: var(--magenta);
+            border-color: var(--magenta);
+            transform: translateY(-3px);
+            padding-left: 0;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-bottom p {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.3);
+        }
+
+        .footer-mosaic {
+            display: flex;
+            gap: 4px;
+        }
+
+        .footer-mosaic span {
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+        }
+
+        /* Scroll Animations */
+        .reveal {
+            opacity: 1;
+            transform: none;
+        }
+
+        html.js .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        html.js .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+        .reveal-delay-5 { transition-delay: 0.5s; }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .values-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .who-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                padding: 16px 24px;
+            }
+
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: white;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 30px;
+                z-index: 100;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links a {
+                font-size: 1.2rem;
+            }
+
+            .mobile-toggle {
+                display: flex;
+            }
+
+            .mobile-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+
+            .mobile-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .mobile-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(5px, -5px);
+            }
+
+            .hero {
+                padding: 100px 24px 60px;
+            }
+
+            .section-container {
+                padding: 70px 24px;
+            }
+
+            .what-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .vs-divider {
+                display: none;
+            }
+
+            .who-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .values-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 14px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .hero-cta-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .apply-form {
+                padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .values-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .value-card {
+                padding: 24px 16px;
+            }
+
+            .value-emoji {
+                font-size: 2rem;
+            }
+
+            .hero h1 {
+                letter-spacing: -1px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-logo"><span>M.EX.O</span></div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#cosa">Cos'è</a></li>
+            <li><a href="#chi">Chi cerchiamo</a></li>
+            <li><a href="#valori">Valori</a></li>
+            <li><a href="#candidatura">Candidati</a></li>
+        </ul>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Apri menu" aria-expanded="false" aria-controls="navLinks" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-mosaic-container" id="heroMosaic"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="dot"></span>
+                Open Call 2025
+            </div>
+            <h1>
+                <span class="mosaic-text accent">Mosaic</span><br>
+                Exhibition<br>Orchestra
+            </h1>
+            <p class="hero-subtitle-line">Una nuova orchestra per un nuovo modo di fare musica.</p>
+            <p>Un laboratorio creativo multidisciplinare dove culture, generazioni e linguaggi si fondono in un mosaico sonoro e visivo unico.</p>
+            <div class="hero-cta-group">
+                <a href="#candidatura" class="btn-primary">
+                    <span>Invia la tua candidatura</span>
+                    <span>→</span>
+                </a>
+                <a href="#cosa" class="btn-secondary">
+                    Scopri il progetto
+                </a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- What is MEXO -->
+    <section class="what-section" id="cosa">
+        <div class="section-container">
+            <div class="reveal">
+                <div class="section-label">
+                    <span class="line" style="background: var(--magenta);"></span>
+                    <span style="color: var(--magenta);">Il Progetto</span>
+                </div>
+                <h2 class="section-title">Cos'è M.EX.O?</h2>
+                <p class="section-subtitle">Non un'orchestra convenzionale. Un ecosistema creativo in evoluzione continua.</p>
+            </div>
+            
+            <div class="what-grid-wrapper">
+                <div class="vs-divider">VS</div>
+                <div class="what-grid">
+                    <div class="what-column not-column reveal reveal-delay-1">
+                        <div class="what-column-header">
+                            <div class="what-column-icon" aria-hidden="true">✕</div>
+                            <h3 class="what-column-title">Non è un'orchestra tradizionale</h3>
+                        </div>
+                        <ul class="what-list">
+                            <li>
+                                <span class="icon">✕</span>
+                                <span>Gerarchia rigida</span>
+                            </li>
+                            <li>
+                                <span class="icon">✕</span>
+                                <span>Singolo genere musicale</span>
+                            </li>
+                            <li>
+                                <span class="icon">✕</span>
+                                <span>Repertorio di sola musica già scritta</span>
+                            </li>
+                            <li>
+                                <span class="icon">✕</span>
+                                <span>Solo musicisti classici o standard</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="what-column yes-column reveal reveal-delay-2">
+                        <div class="what-column-header">
+                            <div class="what-column-icon" aria-hidden="true">✦</div>
+                            <h3 class="what-column-title">Ma un laboratorio creativo multidisciplinare</h3>
+                        </div>
+                        <ul class="what-list">
+                            <li>
+                                <span class="icon">✓</span>
+                                <span>Dialogo trans-generazionale</span>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <span>Mosaico di culture: jazz, africana, elettronica, funk, hip hop, mediterranea, tradizioni popolari</span>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <span>Nuovo linguaggio collettivo</span>
+                            </li>
+                            <li>
+                                <span class="icon">✓</span>
+                                <span>Ecosistema espanso: musicisti, DJ, producer, visual artist, danzatori</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Who Can Apply -->
+    <section class="who-section" id="chi">
+        <div class="section-container">
+            <div style="text-align: center;" class="reveal">
+                <div class="section-label" style="justify-content: center;">
+                    <span class="line" style="background: var(--blue);"></span>
+                    <span style="color: var(--blue);">Partecipa</span>
+                    <span class="line" style="background: var(--blue);"></span>
+                </div>
+                <h2 class="section-title">Chi può candidarsi</h2>
+                <p class="section-subtitle" style="margin: 0 auto;">Cerchiamo persone, non solo ruoli. Ogni tessera del mosaico è essenziale.</p>
+            </div>
+            
+            <div class="who-grid">
+                <div class="who-card reveal reveal-delay-1">
+                    <div class="who-icon" aria-hidden="true">🎵</div>
+                    <h3>Musicisti</h3>
+                    <p>Giovani ed esperti, di qualsiasi tradizione e background musicale</p>
+                </div>
+                <div class="who-card reveal reveal-delay-2">
+                    <div class="who-icon" aria-hidden="true">🎛️</div>
+                    <h3>DJ & Producer</h3>
+                    <p>Creatori di suoni, beat maker, sound designer e sperimentatori</p>
+                </div>
+                <div class="who-card reveal reveal-delay-3">
+                    <div class="who-icon" aria-hidden="true">🎨</div>
+                    <h3>Video & Visual Artist</h3>
+                    <p>Artisti visivi, VJ, motion designer e creatori di immaginari</p>
+                </div>
+                <div class="who-card reveal reveal-delay-4">
+                    <div class="who-icon" aria-hidden="true">💃</div>
+                    <h3>Danzatori & Performer</h3>
+                    <p>Corpi in movimento, performer, artisti della scena dal vivo</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="values-section" id="valori">
+        <div class="section-container">
+            <div style="text-align: center;" class="reveal">
+                <div class="section-label" style="justify-content: center;">
+                    <span class="line" style="background: var(--yellow);"></span>
+                    <span style="color: var(--yellow);">Oltre la tecnica</span>
+                    <span class="line" style="background: var(--yellow);"></span>
+                </div>
+                <h2 class="section-title">Cosa cerchiamo</h2>
+                <p class="section-subtitle" style="margin: 0 auto;">La tecnica è importante, ma non è tutto. Cerchiamo qualità umane e artistiche che rendono unica ogni collaborazione.</p>
+            </div>
+            
+            <div class="values-grid">
+                <div class="value-card reveal reveal-delay-1">
+                    <span class="value-emoji" aria-hidden="true">👂</span>
+                    <h3>Ascolto</h3>
+                    <p>Saper ascoltare prima di suonare</p>
+                </div>
+                <div class="value-card reveal reveal-delay-2">
+                    <span class="value-emoji" aria-hidden="true">🔍</span>
+                    <h3>Curiosità</h3>
+                    <p>Esplorare l'ignoto con entusiasmo</p>
+                </div>
+                <div class="value-card reveal reveal-delay-3">
+                    <span class="value-emoji" aria-hidden="true">🌊</span>
+                    <h3>Apertura</h3>
+                    <p>Accogliere senza giudizio</p>
+                </div>
+                <div class="value-card reveal reveal-delay-4">
+                    <span class="value-emoji" aria-hidden="true">⚡</span>
+                    <h3>Improvvisazione</h3>
+                    <p>Creare nel momento presente</p>
+                </div>
+                <div class="value-card reveal reveal-delay-5">
+                    <span class="value-emoji" aria-hidden="true">🤝</span>
+                    <h3>Condivisione</h3>
+                    <p>Costruire insieme, senza ego</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Apply Section -->
+    <section class="apply-section" id="candidatura">
+        <div class="section-container">
+            <div class="apply-container">
+                <div class="apply-visual reveal">
+                    <span class="apply-block" style="background: var(--yellow); width: 16px; height: 16px; animation-delay: 0s;"></span>
+                    <span class="apply-block" style="background: var(--orange); width: 20px; height: 12px; animation-delay: 0.2s;"></span>
+                    <span class="apply-block" style="background: var(--red); width: 14px; height: 18px; animation-delay: 0.4s;"></span>
+                    <span class="apply-block" style="background: var(--blue); width: 18px; height: 14px; animation-delay: 0.6s;"></span>
+                    <span class="apply-block" style="background: var(--green); width: 12px; height: 20px; animation-delay: 0.8s;"></span>
+                    <span class="apply-block" style="background: var(--turchese); width: 22px; height: 10px; animation-delay: 1s;"></span>
+                    <span class="apply-block" style="background: var(--magenta); width: 16px; height: 16px; animation-delay: 1.2s;"></span>
+                    <span class="apply-block" style="background: var(--yellow); width: 10px; height: 22px; animation-delay: 1.4s;"></span>
+                    <span class="apply-block" style="background: var(--red); width: 18px; height: 12px; animation-delay: 1.6s;"></span>
+                    <span class="apply-block" style="background: var(--blue); width: 14px; height: 14px; animation-delay: 1.8s;"></span>
+                    <span class="apply-block" style="background: var(--orange); width: 20px; height: 16px; animation-delay: 2s;"></span>
+                    <span class="apply-block" style="background: var(--green); width: 12px; height: 18px; animation-delay: 2.2s;"></span>
+                </div>
+                
+                <div class="reveal">
+                    <div class="section-label" style="justify-content: center;">
+                        <span class="line" style="background: var(--red);"></span>
+                        <span style="color: var(--red);">Candidatura</span>
+                        <span class="line" style="background: var(--red);"></span>
+                    </div>
+                    <h2 class="section-title">Come candidarsi</h2>
+                </div>
+                
+                <p class="apply-text reveal reveal-delay-1">
+                    Compila il modulo qui sotto per candidarti. Raccontaci chi sei, cosa fai e quale linguaggio vuoi portare nel mosaico.
+                </p>
+                
+                <div class="apply-email reveal reveal-delay-2">
+                    <span class="email-icon" aria-hidden="true">✉️</span>
+                    <div>
+                        <span class="email-alt-label">Oppure scrivici direttamente a</span>
+                        <br>
+                        <a href="mailto:candidature@mosaicoorchestra.it" id="emailLink">candidature@mosaicoorchestra.it</a>
+                        <br>
+                        <button type="button" class="copy-hint" id="copyBtn" onclick="copyEmail()">Clicca per copiare</button>
+                    </div>
+                </div>
+                
+                <form class="apply-form reveal reveal-delay-3" action="https://formsubmit.co/candidature@mosaicoorchestra.it" method="POST">
+                    <input type="hidden" name="_subject" value="Nuova candidatura M.EX.O — Open Call 2025">
+                    <input type="hidden" name="_captcha" value="false">
+                    <!-- Se vuoi mostrare una pagina di ringraziamento personalizzata, decommenta e modifica: -->
+                    <!-- <input type="hidden" name="_next" value="https://tuosito.it/grazie.html"> -->
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nome">Nome e Cognome *</label>
+                            <input type="text" id="nome" name="Nome" required placeholder="Es. Luca Rossi">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="Email" required placeholder="luca@esempio.it">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="ruolo">Ruolo / Disciplina *</label>
+                            <select id="ruolo" name="Ruolo" required>
+                                <option value="" disabled selected>Seleziona il tuo ruolo</option>
+                                <option value="Musicista">Musicista</option>
+                                <option value="DJ / Producer">DJ & Producer</option>
+                                <option value="Video / Visual Artist">Video & Visual Artist</option>
+                                <option value="Danzatore / Performer">Danzatore & Performer</option>
+                                <option value="Altro">Altro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="portfolio">Portfolio / Link (opzionale)</label>
+                            <input type="url" id="portfolio" name="Portfolio" placeholder="https://soundcloud.com/...">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="messaggio">Messaggio *</label>
+                        <textarea id="messaggio" name="Messaggio" required placeholder="Raccontaci chi sei, cosa fai e quale linguaggio vuoi portare nel mosaico..."></textarea>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="privacy" name="Privacy" required>
+                        <label for="privacy">Acconsento al trattamento dei miei dati personali secondo la <a href="#" target="_blank">Privacy Policy</a> e accetto di essere ricontattato per la candidatura. *</label>
+                    </div>
+                    
+                    <div class="form-submit">
+                        <button type="submit" class="btn-primary btn-large">
+                            <span>Invia la tua candidatura</span>
+                            <span>→</span>
+                        </button>
+                        <p class="form-note">* Campi obbligatori</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h3><span>M.EX.O</span></h3>
+                <p>Mosaic Exhibition Orchestra — Un laboratorio creativo multidisciplinare dove ogni tessera conta.</p>
+                <div class="footer-social" style="margin-top: 24px;">
+                    <a href="#" aria-label="Instagram">📷</a>
+                    <a href="#" aria-label="Facebook">📘</a>
+                    <a href="#" aria-label="YouTube">▶️</a>
+                    <a href="#" aria-label="SoundCloud">🔊</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Navigazione</h4>
+                <ul>
+                    <li><a href="#cosa">Cos'è M.EX.O</a></li>
+                    <li><a href="#chi">Chi cerchiamo</a></li>
+                    <li><a href="#valori">Valori</a></li>
+                    <li><a href="#candidatura">Candidati</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contatti</h4>
+                <ul>
+                    <li><a href="mailto:candidature@mosaicoorchestra.it">candidature@mosaicoorchestra.it</a></li>
+                    <li><a href="mailto:info@mosaicoorchestra.it">info@mosaicoorchestra.it</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Progetti correlati</h4>
+                <ul>
+                    <li><a href="#">Mosaic Sessions Live</a></li>
+                    <li><a href="#">Residenze Artistiche</a></li>
+                    <li><a href="#">Workshop & Clinic</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© <span id="year">2025</span> Mosaic Exhibition Orchestra. Tutti i diritti riservati.</p>
+            <div class="footer-mosaic">
+                <span style="background: var(--yellow);"></span>
+                <span style="background: var(--orange);"></span>
+                <span style="background: var(--red);"></span>
+                <span style="background: var(--magenta);"></span>
+                <span style="background: var(--blue);"></span>
+                <span style="background: var(--turchese);"></span>
+                <span style="background: var(--green);"></span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mosaic tile colors
+        const colors = ['#F7D000', '#F28C28', '#E63946', '#2176FF', '#2EC4B6', '#00B4D8', '#D72483'];
+        let parallaxTiles = [];
+
+        // Generate hero mosaic tiles
+        function generateMosaicTiles() {
+            const container = document.getElementById('heroMosaic');
+            const tileCount = 80;
+
+            for (let i = 0; i < tileCount; i++) {
+                const tile = document.createElement('div');
+                tile.classList.add('mosaic-tile');
+
+                const w = Math.random() * 60 + 15;
+                const h = Math.random() * 60 + 15;
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const delay = Math.random() * 2;
+                const opacity = Math.random() * 0.15 + 0.05;
+                const rotation = (Math.random() - 0.5) * 30;
+
+                tile.style.cssText = `
+                    width: ${w}px;
+                    height: ${h}px;
+                    left: ${x}%;
+                    top: ${y}%;
+                    background: ${color};
+                    animation-delay: ${delay}s;
+                    opacity: ${opacity};
+                    border-radius: ${Math.random() > 0.5 ? '4px' : '2px'};
+                `;
+                // La rotazione casuale viene conservata tramite variabile CSS e transform inline
+                tile.style.setProperty('--rot', rotation + 'deg');
+                tile.style.transform = `rotate(${rotation}deg)`;
+
+                if (Math.random() > 0.5) {
+                    tile.classList.add('floating-tile');
+                    tile.style.animationDuration = `0.8s, ${4 + Math.random() * 6}s`;
+                }
+
+                container.appendChild(tile);
+            }
+            parallaxTiles = document.querySelectorAll('.floating-tile');
+        }
+
+        generateMosaicTiles();
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('nav');
+            if (window.scrollY > 80) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        function toggleMenu() {
+            const toggle = document.getElementById('mobileToggle');
+            const links = document.getElementById('navLinks');
+            const isActive = links.classList.toggle('active');
+            toggle.classList.toggle('active');
+            toggle.setAttribute('aria-expanded', isActive);
+        }
+
+        // Close mobile menu on link click
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('mobileToggle').classList.remove('active');
+                document.getElementById('navLinks').classList.remove('active');
+                document.getElementById('mobileToggle').setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        // Scroll reveal animations
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Copy email
+        function copyEmail() {
+            const email = 'candidature@mosaicoorchestra.it';
+            const hint = document.getElementById('copyBtn');
+            const ok = () => {
+                hint.textContent = '✓ Copiato!';
+                hint.style.color = '#2EC4B6';
+            };
+            const fallback = () => {
+                const ta = document.createElement('textarea');
+                ta.value = email;
+                document.body.appendChild(ta);
+                ta.select();
+                let copied = false;
+                try {
+                    copied = document.execCommand('copy');
+                } catch (e) {
+                    copied = false;
+                }
+                document.body.removeChild(ta);
+                if (copied) {
+                    ok();
+                } else {
+                    hint.textContent = 'Copia manuale: ' + email;
+                    hint.style.color = '#E63946';
+                }
+            };
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(email).then(ok).catch(fallback);
+            } else {
+                fallback();
+            }
+            setTimeout(() => {
+                hint.textContent = 'Clicca per copiare';
+                hint.style.color = '#666';
+            }, 2000);
+        }
+
+        // Parallax effect on hero tiles
+        window.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 2;
+            const y = (e.clientY / window.innerHeight - 0.5) * 2;
+            parallaxTiles.forEach((tile, i) => {
+                const speed = (i % 5 + 1) * 0.8;
+                tile.style.translate = `${x * speed}px ${y * speed}px`;
+            });
+        });
+
+        // Footer year
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
+```
